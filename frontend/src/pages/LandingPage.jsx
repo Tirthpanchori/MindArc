@@ -8,21 +8,30 @@ import CTA from "../components/landing/CTA";
 import Footer from "../components/landing/Footer";
 
 const LandingPage = () => {
-  // Ensure we start at the top
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-900 selection:bg-indigo-500 selection:text-white overflow-x-hidden">
-      <Navbar />
-      <Hero />
-      <Features />
-      <About />
-      {/* <Testimonials /> */}
-     <CTA />
-      <Footer />
-    </div>
+    <>
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+          .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+          }
+        `}
+      </style>
+      <div className="min-h-screen bg-[#0f1117] font-space-grotesk text-white overflow-x-hidden selection:bg-[#F59E0B] selection:text-white">
+        <Navbar />
+        <Hero />
+        <Features />
+        <About />
+        {/* <Testimonials /> */}
+        <CTA />
+        <Footer />
+      </div>
+    </>
   );
 };
 

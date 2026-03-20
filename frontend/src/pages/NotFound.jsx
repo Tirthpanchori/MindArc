@@ -1,27 +1,35 @@
+import React from 'react';
+import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
 function NotFound() {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 via-white to-blue-50">
-        <div className="text-center p-8">
-          <h1 className="text-9xl font-extrabold text-blue-600 drop-shadow-lg">404</h1>
-          <p className="mt-4 text-2xl font-semibold text-gray-800">
-            Oops! Page not found
-          </p>
-          <p className="mt-2 text-gray-600">
-            The page you’re looking for doesn’t exist or has been moved.
-          </p>
-  
-          <a
-            href="/"
-            className="mt-6 inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg
-                       shadow-md hover:bg-blue-700 hover:shadow-lg transform hover:scale-105
-                       transition duration-300"
-          >
-            Go Back To Home
-          </a>
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-[#0f1117] font-space-grotesk selection:bg-[#F59E0B] selection:text-[#0f1117] p-6">
+      <div className="text-center bg-[#1a1d27] border border-[#374151] rounded p-12 max-w-md w-full shadow-lg">
+        <div className="flex justify-center mb-6">
+          <div className="p-4 bg-[#0f1117] border border-[#374151] rounded text-[#F59E0B]">
+            <AlertTriangle size={48} />
+          </div>
         </div>
+        <h1 className="text-8xl font-black text-white tracking-tighter mb-4">404</h1>
+        <p className="text-lg font-bold text-white uppercase tracking-widest mb-2">
+          Page Not Found
+        </p>
+        <p className="text-[#9CA3AF] font-medium mb-8 text-sm">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+
+        <button
+          onClick={() => navigate('/')}
+          className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 bg-[#F59E0B] text-[#0f1117] font-bold text-sm uppercase tracking-wider rounded hover:bg-amber-400 transition-colors"
+        >
+          <ArrowLeft size={16} /> Go Back Home
+        </button>
       </div>
-    );
-  }
-  
-  export default NotFound;
-  
+    </div>
+  );
+}
+
+export default NotFound;

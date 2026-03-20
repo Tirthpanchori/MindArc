@@ -7,9 +7,7 @@ export const login = async (email, password) => {
   return res.data;
 };
 
-// export const logout = () => {
-//   clearTokens();
-// };
+
 
 export const register = async (username, password, email) => {
   const res = await api.post("/accounts/register/", { username, password, email });
