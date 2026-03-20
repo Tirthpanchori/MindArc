@@ -4,8 +4,7 @@ import api from "../services/api";
 import { getAccessToken, getRefreshToken } from "../utils/token";
 import { useState, useEffect } from "react";
 
-
-function ProtectedRoute({ children,allowedRole }) {
+function ProtectedRoute({ children, allowedRole }) {
   const [isAuthorised, setIsAuthorised] = useState(null);
 
   useEffect(() => {
@@ -13,7 +12,6 @@ function ProtectedRoute({ children,allowedRole }) {
       try {
         await auth();
       } catch (err) {
-        console.error("Authentication error:", err);
         setIsAuthorised(false);
       }
     };
@@ -31,7 +29,6 @@ function ProtectedRoute({ children,allowedRole }) {
       localStorage.setItem("access_token", response.data.access);
       setIsAuthorised(true);
     } catch (error) {
-      console.error("Token refresh failed:", error);
       setIsAuthorised(false);
     }
   };
@@ -49,7 +46,6 @@ function ProtectedRoute({ children,allowedRole }) {
       return;
     }
 
-    //  Check role
     const storedRole = localStorage.getItem("role");
     if (allowedRole && storedRole?.toLowerCase() !== allowedRole.toLowerCase()) {
       setIsAuthorised(false);
@@ -59,7 +55,16 @@ function ProtectedRoute({ children,allowedRole }) {
     setIsAuthorised(true);
   };
 
-  if (isAuthorised === null) return <div>Loading...</div>;
+  if (isAuthorised === null) {
+    return (
+      <div className="min-h-screen bg-[#0f1117] flex items-center justify-center font-space-grotesk">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-4 border-[#374151] border-t-[#F59E0B] rounded-full animate-spin" />
+          <p className="text-[#9CA3AF] font-bold tracking-widest uppercase text-sm">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return isAuthorised ? children : <Navigate to="/login" />;
 }

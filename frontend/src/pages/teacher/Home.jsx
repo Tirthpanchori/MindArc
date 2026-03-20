@@ -61,10 +61,10 @@ const HomeT = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0f1117] flex items-center justify-center font-space-grotesk">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin" />
-          <p className="text-slate-400 font-medium">Loading Dashboard...</p>
+          <div className="w-8 h-8 border-4 border-[#374151] border-t-[#F59E0B] rounded-full animate-spin" />
+          <p className="text-[#9CA3AF] font-bold text-sm tracking-widest uppercase">Loading...</p>
         </div>
       </div>
     );
@@ -75,64 +75,56 @@ const HomeT = () => {
       label: "Total Quizzes",
       value: data.stats.totalQuizzes,
       icon: BookOpen,
-      color: "violet",
-      gradient: "from-violet-500 to-indigo-500"
     },
     {
       label: "Active Quizzes",
       value: data.stats.activeQuizzes,
       icon: Target,
-      color: "fuchsia",
-      gradient: "from-fuchsia-500 to-pink-500"
     },
     {
       label: "Total Attempts",
       value: data.stats.totalAttempts,
       icon: Users,
-      color: "cyan",
-      gradient: "from-cyan-500 to-teal-500"
     },
     {
       label: "Avg. Score",
       value: `${data.stats.avgScore}%`,
       icon: Trophy,
-      color: "amber",
-      gradient: "from-amber-500 to-orange-500"
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-violet-500/30 p-6 md:p-8 lg:p-12">
+    <div className="min-h-screen bg-[#0f1117] text-white font-space-grotesk selection:bg-[#F59E0B] selection:text-[#0f1117] p-6 md:p-8 lg:p-12">
       <div className="max-w-7xl mx-auto space-y-12">
 
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-[#1a1d27] pb-6">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Teacher</span> 👋
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
+              Welcome back, <span className="text-[#F59E0B]">Teacher</span>
             </h1>
-            <p className="text-slate-400">Here's what's happening with your quizzes today.</p>
+            <p className="text-[#9CA3AF] font-medium">Here's what's happening with your quizzes today.</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={handleLogout}
-              className="px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:bg-rose-500 hover:text-white hover:border-rose-500 transition-all font-medium flex items-center gap-2 group"
+              className="px-4 py-2 rounded bg-[#1a1d27] border border-[#374151] text-[#9CA3AF] hover:text-white hover:border-[#F59E0B] transition-all font-bold text-sm flex items-center gap-2 group uppercase tracking-wider"
             >
-              <LogOut size={18} className="group-hover:-translate-x-0.5 transition-transform" />
+              <LogOut size={16} className="group-hover:-translate-x-0.5 transition-transform text-[#F59E0B]" />
               Logout
             </button>
             <button
               onClick={() => navigate('/recent-teacher-quizzes')}
-              className="px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 transition-all font-medium flex items-center gap-2"
+              className="px-4 py-2 rounded bg-[#1a1d27] border border-[#374151] text-[#9CA3AF] hover:text-white hover:border-[#F59E0B] transition-all font-bold text-sm flex items-center gap-2 uppercase tracking-wider"
             >
-              <Layout size={18} />
-              Recent Quizzes
+              <Layout size={16} className="text-[#F59E0B]" />
+              Library
             </button>
             <Link
               to="/create-quiz"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+              className="px-4 py-2 rounded bg-[#F59E0B] text-[#0f1117] font-bold hover:bg-amber-400 transition-all flex items-center gap-2 uppercase tracking-wider shadow"
             >
-              <Plus size={20} strokeWidth={2.5} />
+              <Plus size={18} strokeWidth={2.5} />
               Create Quiz
             </Link>
           </div>
@@ -143,27 +135,23 @@ const HomeT = () => {
           {statsCards.map((stat, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group bg-slate-900/50 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 p-6 rounded-2xl transition-all relative overflow-hidden"
+              className="group bg-[#1a1d27] border border-[#374151] p-6 rounded flex flex-col justify-between transition-colors hover:border-[#F59E0B]"
             >
-              <div className={`absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity bg-gradient-to-br ${stat.gradient} blur-2xl rounded-bl-3xl w-24 h-24`} />
-
               <div className="flex items-start justify-between mb-4">
-                <div className={`p-3 rounded-xl bg-slate-950 border border-slate-800 group-hover:border-${stat.color}-500/30 transition-colors`}>
-                  <stat.icon className={`w-6 h-6 text-${stat.color}-400`} />
-                </div>
-                {index === 1 && ( // Only for Active Quizzes as an example
-                  <span className="flex items-center gap-1 text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
+                <p className="text-[#9CA3AF] text-xs font-bold uppercase tracking-widest">{stat.label}</p>
+                <stat.icon size={18} className="text-[#F59E0B]" />
+              </div>
+
+              <div className="flex items-center gap-3">
+                <h3 className="text-4xl font-bold text-white group-hover:scale-105 transition-transform origin-left">{stat.value}</h3>
+                {index === 1 && data.stats.activeQuizzes > 0 && ( // Active Quizzes label
+                  <span className="flex items-center gap-1 text-xs font-bold text-green-500 border border-green-500/20 px-2 py-1 rounded bg-green-500/5 uppercase tracking-wider">
                     <CheckCircle2 size={12} /> Live
                   </span>
                 )}
-              </div>
-
-              <div>
-                <h3 className="text-3xl font-bold text-white mb-1 group-hover:scale-105 transition-transform origin-left">{stat.value}</h3>
-                <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
               </div>
             </motion.div>
           ))}
@@ -171,27 +159,27 @@ const HomeT = () => {
 
         {/* Recent Quizzes Section */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between border-b border-[#1a1d27] pb-4">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Clock className="text-violet-400" size={20} />
               Recent Quizzes
             </h2>
-            <Link to="/recent-teacher-quizzes" className="text-sm font-medium text-violet-400 hover:text-violet-300 flex items-center gap-1 group">
+            <Link to="/recent-teacher-quizzes" className="text-sm font-bold text-[#F59E0B] hover:text-amber-400 flex items-center gap-1 group uppercase tracking-wider">
               View All <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
           {data.recentQuizzes.length === 0 ? (
-            <div className="bg-slate-900/30 border border-slate-800 rounded-2xl p-12 text-center">
-              <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="text-slate-500 w-8 h-8" />
+            <div className="bg-[#1a1d27] border border-[#374151] rounded p-12 text-center">
+              <div className="w-16 h-16 bg-[#0f1117] border border-[#374151] rounded flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="text-[#F59E0B] w-8 h-8" />
               </div>
-              <h3 className="text-lg font-medium text-white mb-2">No quizzes yet</h3>
-              <p className="text-slate-500 mb-6 max-w-sm mx-auto">Create your first quiz to start tracking student progress and gathering insights.</p>
+              <h3 className="text-lg font-bold text-white mb-2">No quizzes yet</h3>
+              <p className="text-[#9CA3AF] font-medium mb-6">Create your first quiz to start tracking student progress and gathering insights.</p>
               <Link
                 to="/create-quiz"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-slate-950 font-bold hover:bg-slate-200 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded bg-[#F59E0B] text-[#0f1117] font-bold hover:bg-amber-400 transition-colors uppercase tracking-wider text-sm"
               >
+                <Plus size={18} />
                 Create Quiz
               </Link>
             </div>
@@ -200,51 +188,52 @@ const HomeT = () => {
               {data.recentQuizzes.map((quiz, index) => (
                 <motion.div
                   key={quiz.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + (index * 0.05) }}
-                  className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-500/5 transition-all group"
+                  className="bg-[#1a1d27] border border-[#374151] rounded p-6 hover:border-[#F59E0B] transition-colors group flex flex-col justify-between"
                 >
                   <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 bg-violet-500/10 rounded-xl">
-                      <BookOpen className="text-violet-400 w-6 h-6" />
+                    <div className="p-2.5 bg-[#0f1117] border border-[#374151] rounded">
+                      <BookOpen className="text-[#F59E0B] w-5 h-5" />
                     </div>
 
                     <button
                       onClick={() => copyToClipboard(quiz.code)}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-400 hover:text-white hover:border-slate-600 transition-all active:scale-95"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded bg-[#0f1117] border border-[#374151] text-xs font-bold text-[#9CA3AF] tracking-widest uppercase hover:text-white hover:border-[#F59E0B] transition-colors active:scale-95"
                       title="Copy Code"
                     >
                       {quiz.code}
-                      <Copy size={12} />
+                      <Copy size={12} className="text-[#F59E0B]" />
                     </button>
                   </div>
 
-                  <h3 className="text-lg font-bold text-white mb-2 line-clamp-1" title={quiz.title}>
+                  <h3 className="text-lg font-bold text-white mb-4 line-clamp-2" title={quiz.title}>
                     {quiz.title}
                   </h3>
 
-                  <div className="flex items-center gap-4 text-sm text-slate-500 mb-6">
+                  <div className="flex items-center gap-4 text-xs font-bold text-[#9CA3AF] uppercase tracking-wider mb-8 mt-auto">
                     <span className="flex items-center gap-1.5">
-                      <Clock size={14} /> {quiz.timer}m
+                      <Clock size={14} className="text-[#F59E0B]" /> {quiz.timer / 60}m
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Layout size={14} /> {quiz.total_questions} Qs
+                      <Layout size={14} className="text-[#F59E0B]" /> {quiz.total_questions}
                     </span>
-                    <span className="flex items-center gap-1.5 text-slate-400">
-                      <Users size={14} /> {quiz.attempts_count} Attempts
+                    <span className="flex items-center gap-1.5 text-white">
+                      <Users size={14} className="text-[#F59E0B]" /> {quiz.attempts_count}
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-3">
-                    <button
-                      onClick={() => navigate(`/teacher/quiz/${quiz.id}/analysis`)}
-                      className="px-4 py-2 rounded-lg bg-violet-600/10 text-violet-400 border border-violet-600/20 text-sm font-medium hover:bg-violet-600 hover:text-white transition-all flex items-center justify-center gap-2"
-                    >
+                  <button
+                    onClick={() => navigate(`/teacher/quiz/${quiz.id}/analysis`)}
+                    className="w-full py-3 rounded bg-[#0f1117] border border-[#374151] text-[#9CA3AF] font-bold text-sm uppercase tracking-wider hover:bg-[#374151] hover:text-white transition-colors flex items-center justify-between px-4 group/btn"
+                  >
+                    <div className="flex items-center gap-2">
                       <BarChart2 size={16} />
-                      View Analytics
-                    </button>
-                  </div>
+                      Analytics
+                    </div>
+                    <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform text-[#F59E0B]" />
+                  </button>
 
                 </motion.div>
               ))}

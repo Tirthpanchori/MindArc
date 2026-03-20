@@ -1,82 +1,158 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { BookOpen, Trophy, BarChart, Users, Clock, Shield } from "lucide-react";
 
-const BentoItem = ({ title, description, icon: Icon, className, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    whileHover={{ scale: 1.02, y: -5 }}
-    viewport={{ once: true }}
-    transition={{ delay, duration: 0.3 }}
-    className={`bg-slate-900/50 border border-slate-700/50 rounded-3xl p-8 hover:bg-slate-800 hover:border-fuchsia-500/50 transition-all duration-300 group shadow-lg hover:shadow-fuchsia-500/20 ${className}`}
-  >
-    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:from-violet-500 group-hover:to-fuchsia-500">
-      <Icon className="w-6 h-6 text-fuchsia-400 group-hover:text-white transition-colors" />
+const PDFMockup = () => {
+  const [phase, setPhase] = React.useState("idle");
+  const [bar, setBar] = React.useState(0);
+
+  React.useEffect(() => {
+    let timeout;
+    if (phase === "idle") {
+      setBar(0);
+      timeout = setTimeout(() => setPhase("parsing"), 1500);
+    }
+    if (phase === "parsing") {
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 2;
+        setBar(progress);
+        if (progress >= 100) { clearInterval(interval); timeout = setTimeout(() => setPhase("questions"), 400); }
+      }, 30);
+      return () => { clearInterval(interval); clearTimeout(timeout); };
+    }
+    if (phase === "questions") {
+      timeout = setTimeout(() => setPhase("idle"), 6000);
+    }
+    return () => clearTimeout(timeout);
+  }, [phase]);
+
+  return (
+    <div className="w-full h-full bg-[#0f1117] border border-[#1a1d27] rounded p-5 flex flex-col gap-4 overflow-hidden">
+      <div className={`border-2 border-dashed rounded p-4 flex items-center gap-3 transition-colors shrink-0 ${phase === "idle" ? "border-[#374151]" : "border-[#F59E0B]"}`}>
+        <div className="w-8 h-10 bg-[#1a1d27] border border-[#374151] rounded flex items-center justify-center text-[10px] font-bold text-[#F59E0B] shrink-0">PDF</div>
+        <div className="flex flex-col gap-1 min-w-0">
+          <span className="text-white text-xs font-medium truncate">
+            {phase === "idle" ? "lecture_notes_module2.pdf" : phase === "parsing" ? "Reading document..." : "Quiz ready!"}
+          </span>
+          <span className="text-[#9CA3AF] text-[10px]">
+            {phase === "idle" ? "2.4 MB · Drop to parse" : phase === "parsing" ? `Parsing... ${bar}%` : "12 questions generated"}
+          </span>
+        </div>
+        {phase === "questions" && <span className="ml-auto text-green-400 text-xs font-bold shrink-0">✓</span>}
+      </div>
+
+      {phase === "parsing" && (
+        <div className="h-1 bg-[#1a1d27] rounded overflow-hidden shrink-0">
+          <div className="h-full bg-[#F59E0B] rounded transition-all duration-100" style={{ width: `${bar}%` }}></div>
+        </div>
+      )}
+
+      {phase === "questions" && (
+        <div className="flex flex-col gap-2 flex-1 overflow-hidden">
+          {["Q1 — Define normalization in DBMS.", "Q2 — What is a deadlock? How is it prevented?", "Q3 — Explain ACID properties."].map((q, i) => (
+            <div key={i} className="bg-[#1a1d27] border border-[#374151] rounded px-3 py-2 text-[11px] text-[#9CA3AF] shrink-0">{q}</div>
+          ))}
+          <div className="text-[10px] text-[#374151] mt-1">+ 9 more questions</div>
+        </div>
+      )}
+
+      {phase === "idle" && (
+        <div className="flex-1 flex items-center justify-center text-[#374151] text-xs">
+          Scanning document structure...
+        </div>
+      )}
     </div>
-    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-fuchsia-300 transition-colors">{title}</h3>
-    <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">{description}</p>
-  </motion.div>
+  );
+};
+
+const AnalyticsMockup = () => {
+  const topics = [
+    { label: "Arrays", score: 91, weak: false },
+    { label: "Trees", score: 43, weak: true },
+    { label: "Graphs", score: 67, weak: false },
+    { label: "DP", score: 29, weak: true },
+    { label: "Sorting", score: 85, weak: false },
+  ];
+
+  const [animated, setAnimated] = React.useState(false);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => setAnimated(true), 300);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return (
+    <div className="w-full h-full bg-[#0f1117] border border-[#1a1d27] rounded p-5 flex flex-col gap-4 overflow-hidden">
+      <div className="flex items-center justify-between shrink-0">
+        <span className="text-white text-xs font-bold">Class Performance — Quiz #4</span>
+        <span className="flex items-center gap-1.5">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F59E0B] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F59E0B]"></span>
+          </span>
+          <span className="text-[#F59E0B] text-[10px] font-bold uppercase tracking-widest">Live</span>
+        </span>
+      </div>
+
+      <div className="flex-1 flex items-end gap-3 min-h-0">
+        {topics.map((t, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+            <span className={`text-[10px] font-bold ${t.weak ? "text-[#F59E0B]" : "text-[#9CA3AF]"}`}>{t.score}%</span>
+            <div className="w-full rounded-t overflow-hidden flex flex-col justify-end" style={{ height: "80%" }}>
+              <div
+                className={`w-full rounded-t transition-all duration-700 ${t.weak ? "bg-[#F59E0B]" : "bg-[#374151]"}`}
+                style={{ height: animated ? `${t.score}%` : "0%" }}
+              ></div>
+            </div>
+            <span className="text-[#9CA3AF] text-[10px] shrink-0">{t.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="border-t border-[#1a1d27] pt-3 flex items-center gap-2 shrink-0">
+        <div className="w-2 h-2 rounded-full bg-[#F59E0B] shrink-0"></div>
+        <span className="text-[10px] text-[#9CA3AF]">Amber bars indicate weak areas — students need intervention here.</span>
+      </div>
+    </div>
+  );
+};
+
+const FeatureRow = ({ title, description, badge, reverse, visual }) => (
+  <div className={`flex flex-col gap-12 lg:gap-24 items-center ${reverse ? "lg:flex-row-reverse" : "lg:flex-row"} py-20`}>
+    <div className="lg:w-1/2 w-full">
+      <span className="text-[#F59E0B] font-bold tracking-widest uppercase text-sm mb-4 block">{badge}</span>
+      <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">{title}</h3>
+      <p className="text-lg text-[#9CA3AF] leading-relaxed">{description}</p>
+    </div>
+    <div className="lg:w-1/2 w-full aspect-square md:aspect-video lg:aspect-square bg-[#1a1d27] border border-[#374151] p-4">
+      {visual}
+    </div>
+  </div>
 );
 
 const Features = () => {
   return (
-    <section id="features" className="py-24 bg-slate-950 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight"
-          >
-            Everything You Need <br />
-            <span className="text-fuchsia-500">To Succeed at Scale</span>
-          </motion.h2>
+    <section id="features" className="py-24 bg-[#0f1117]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Built for scale.</h2>
+          <p className="mt-4 text-xl text-[#9CA3AF] max-w-2xl">
+            Everything you need to succeed, structured logically without unnecessary distractions.
+          </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <BentoItem
-            title="Structural Mastery"
-            description="Expert-curated pathways that guide you from novice to expert without the fluff."
-            icon={BookOpen}
-            className="md:col-span-2 bg-gradient-to-br from-slate-900 to-violet-900/20"
-            delay={0.1}
+        <div className="flex flex-col divide-y divide-[#1a1d27]">
+          <FeatureRow
+            badge="AI Generation"
+            title="Upload a PDF. Get a Quiz in Seconds."
+            description="MindArc parses your course materials, lecture notes, and documents using AI — instantly generating accurate, context-aware questions. No manual effort, no copy-pasting."
+            reverse={false}
+            visual={<PDFMockup />}
           />
-          <BentoItem
-            title="Gamified Progress"
-            description="Earn rewards as you conquer new milestones."
-            icon={Trophy}
-            className="md:col-span-1"
-            delay={0.2}
-          />
-          <BentoItem
-            title="Real-time Analytics"
-            description="Visualize your learning velocity with enterprise-grade charts."
-            icon={BarChart}
-            className="md:col-span-1"
-            delay={0.3}
-          />
-          <BentoItem
-            title="Global Community"
-            description="Join thousands of learners in a collaborative ecosystem."
-            icon={Users}
-            className="md:col-span-2 bg-gradient-to-bl from-slate-900 to-fuchsia-900/20"
-            delay={0.4}
-          />
-          <BentoItem
-            title="Adaptive Schedule"
-            description="AI that learns your pace and adjusts content delivery."
-            icon={Clock}
-            className="md:col-span-1"
-            delay={0.5}
-          />
-          <BentoItem
-            title="Enterprise Security"
-            description="Your data is encrypted with military-grade standards."
-            icon={Shield}
-            className="md:col-span-2"
-            delay={0.6}
+          <FeatureRow
+            badge="Analytics"
+            title="See Exactly Where Students Are Struggling."
+            description="Real-time quiz-level analytics show accuracy rates, completion times, and concept-level breakdowns. Identify knowledge gaps at a glance — for the whole class or a single student."
+            reverse={true}
+            visual={<AnalyticsMockup />}
           />
         </div>
       </div>

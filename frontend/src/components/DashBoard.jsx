@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { LogOut, PlusSquare, FileText } from "lucide-react";
 
 function Dashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState({ name: "", role: "", id: "" });
 
   useEffect(() => {
-    // Get user info from localStorage or context (simplified here)
     const storedRole = localStorage.getItem("role");
     const storedName = localStorage.getItem("name");
     const storedId = localStorage.getItem("userId");
@@ -44,45 +44,57 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      {/* Top bar */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold">
-          Welcome, <span className="text-blue-600">{user.name}</span> 👋
-        </h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-        >
-          Logout
-        </button>
-      </div>
-
-      {/* Grid Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Card 1 - Create/Join Quiz */}
-        <div
-          onClick={handleQuizAction}
-          className="bg-white shadow-md rounded-xl p-6 cursor-pointer hover:shadow-lg transition"
-        >
-          <h2 className="text-xl font-semibold mb-2">
-            {user.role === "teacher" ? "Create a New Quiz" : "Join a Quiz"}
-          </h2>
-          <p className="text-gray-600">
-            {user.role === "teacher"
-              ? "Generate a unique code for your students to attempt."
-              : "Enter a quiz code shared by your teacher to start."}
-          </p>
+    <div className="min-h-screen bg-[#0f1117] font-space-grotesk text-white selection:bg-[#F59E0B] selection:text-[#0f1117] p-6 lg:p-12">
+      <div className="max-w-6xl mx-auto space-y-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-[#1a1d27] pb-8">
+          <div>
+            <h1 className="text-3xl font-black tracking-tight text-white mb-2">
+              Welcome, <span className="text-[#F59E0B]">{user.name}</span>
+            </h1>
+            <p className="text-[#9CA3AF] font-medium text-sm tracking-widest uppercase">
+              {user.role} Dashboard
+            </p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-6 py-3 rounded bg-[#1a1d27] border border-[#374151] text-[#9CA3AF] hover:text-white hover:border-red-500 hover:bg-red-500/10 transition-colors uppercase tracking-wider text-xs font-bold"
+          >
+            <LogOut size={16} /> Logout
+          </button>
         </div>
 
-        {/* Example card - past quizzes */}
-        <div 
-          onClick={handleRecentQuizzes}
-          className="bg-white shadow-md rounded-xl p-6 cursor-pointer hover:shadow-lg transition">
-          <h2 className="text-xl font-semibold mb-2">Recent Quizzes</h2>
-          <p className="text-gray-600">
-            View your {user.role === "teacher" ? "created" : "attempted"} quizzes here.
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div
+            onClick={handleQuizAction}
+            className="group bg-[#1a1d27] border border-[#374151] rounded p-8 cursor-pointer hover:border-[#F59E0B] transition-colors relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#F59E0B]/5 rounded-full blur-[40px] pointer-events-none transition-opacity group-hover:opacity-100 opacity-0" />
+            <div className="w-12 h-12 rounded bg-[#0f1117] border border-[#374151] flex items-center justify-center text-[#F59E0B] mb-6 mb-4 group-hover:bg-[#F59E0B] group-hover:text-[#0f1117] transition-colors">
+              <PlusSquare size={24} />
+            </div>
+            <h2 className="text-xl font-bold text-white mb-3">
+              {user.role === "teacher" ? "Create a New Quiz" : "Join a Quiz"}
+            </h2>
+            <p className="text-[#9CA3AF] font-medium leading-relaxed max-w-sm">
+              {user.role === "teacher"
+                ? "Generate a unique code for your students to attempt, using our AI tools or manually."
+                : "Enter a quiz code shared by your teacher to start your attempt."}
+            </p>
+          </div>
+
+          <div 
+            onClick={handleRecentQuizzes}
+            className="group bg-[#1a1d27] border border-[#374151] rounded p-8 cursor-pointer hover:border-[#F59E0B] transition-colors relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#F59E0B]/5 rounded-full blur-[40px] pointer-events-none transition-opacity group-hover:opacity-100 opacity-0" />
+            <div className="w-12 h-12 rounded bg-[#0f1117] border border-[#374151] flex items-center justify-center text-[#F59E0B] mb-6 group-hover:bg-[#F59E0B] group-hover:text-[#0f1117] transition-colors">
+              <FileText size={24} />
+            </div>
+            <h2 className="text-xl font-bold text-white mb-3">Recent Quizzes</h2>
+            <p className="text-[#9CA3AF] font-medium leading-relaxed max-w-sm">
+              View your {user.role === "teacher" ? "created" : "attempted"} quizzes history and performance metrics here.
+            </p>
+          </div>
         </div>
       </div>
     </div>
