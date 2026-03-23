@@ -9,6 +9,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
 
+
 function ResultPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -59,7 +60,7 @@ function ResultPage() {
     setLoadingAnalysis(true); setAnalysisError(null);
     try {
       const token = localStorage.getItem("access_token");
-      const response = await axios.post("http://127.0.0.1:8000/api/ai/analyze-weak-topics/", 
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai/analyze-weak-topics/`, 
         { quiz_results: result.results },
         { headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) } }
       );
